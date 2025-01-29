@@ -101,7 +101,7 @@ export const typeDefs = gql`
     ): Curso!
     eliminarCurso(id: ID!): Boolean!
 
-    # Mutaciones de Calificaciones
+    # Mutaciones_Calificaciones
     crearCalificacion(
       estudianteId: ID!
       cursoId: ID!
