@@ -105,7 +105,7 @@ export const resolvers = {
     },
   },
 
-  // Resolvers de campos relacionados
+  // Resolvers_campos relacionados
   Boletin: {
     estudiante: async (parent, _, { dataSources }) => {
       return await dataSources.estudiantesAPI.getEstudianteById(parent.estudianteId);
