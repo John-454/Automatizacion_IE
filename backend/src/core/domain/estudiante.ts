@@ -5,6 +5,7 @@ export class Estudiante {
         public apellido: string,
         public email: string,
         public telefono: string,
-        public direccion: string
+        public direccion: string,
+        public acudiente: string
     ) {}
 }

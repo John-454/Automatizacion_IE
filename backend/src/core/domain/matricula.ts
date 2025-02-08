@@ -3,6 +3,6 @@ export class Matricula {
         public id: string,
         public estudianteId: string,
         public cursoId: string,
-        public matriculaFecha: Date
+        public estado: string,
     ) {}
 }
