@@ -1,0 +1,176 @@
+# Tipos principales
+type Estudiante {
+  id: ID!
+  nombre: String!
+  apellido: String!
+  email: String!
+  telefono: String
+  direccion: String
+  acudiente: String
+  matriculas: [Matricula!]
+  calificaciones: [Calificacion!]
+  boletines: [Boletin!]
+  asignaturas: [Asignatura!]
+}
+
+type Curso {
+  id: ID!
+  nombre: String!
+  profesor: String!
+  descripcion: String
+  matriculas: [Matricula!]
+}
+
+type Calificacion {
+  id: ID!
+  estudiante: Estudiante!
+  asignatura: Asignatura!
+  nota: Float!
+  fecha: String!
+  periodo: String!
+  observaciones: String
+}
+
+type Boletin {
+  id: ID!
+  estudiante: Estudiante!
+  periodo: String!
+  fechaGeneracion: String!
+  calificaciones: [Calificacion!]!
+  promedio: Float!
+  observaciones: String
+}
+
+type Matricula {
+  id: ID!
+  estudiante: Estudiante!
+  curso: Curso!
+  asignaturas: [Asignatura!]!
+  estado: EstadoMatricula!
+  periodo: String!
+}
+
+type Asignatura {
+    id: ID!
+    nombre: String!
+    profesor: String!
+    horario: String!
+    estudiantes: [Estudiante!]
+    calificaciones: [Calificacion!]
+    boletines: [Boletin!]
+    matriculas: [Matricula!]
+}
+
+enum EstadoMatricula {
+  ACTIVA
+  CANCELADA
+  FINALIZADA
+}
+
+# Inputs para crear y actualizar
+input EstudianteInput {
+  nombre: String!
+  apellido: String!
+  email: String!
+  telefono: String
+  direccion: String
+  acudiente: String
+}
+
+input CursoInput {
+  nombre: String!
+  profesor : String!
+}
+
+input CalificacionInput {
+  estudianteId: ID!
+  cursoId: ID!
+  nota: Float!
+  fecha: String!
+  periodo: String!
+  observaciones: String
+}
+
+input BoletinInput {
+  estudianteId: ID!
+  periodo: String!
+  observaciones: String
+}
+
+input MatriculaInput {
+  estudianteId: ID!
+  cursoId: ID!
+  asignaturaId: ID!
+  periodo: String!
+}
+
+input AsignaturaInput {
+    nombre: String!
+    profesor: String!
+    horario: String!
+}
+
+# Queries
+type Query {
+  # Estudiantes
+  estudiantes: [Estudiante!]!
+  estudiante(id: ID!): Estudiante
+  
+  # Cursos
+  cursos: [Curso!]!
+  curso(id: ID!): Curso
+  
+  # Calificaciones
+  calificaciones: [Calificacion!]!
+  calificacion(id: ID!): Calificacion
+  calificacionesPorEstudiante(estudianteId: ID!): [Calificacion!]!
+  calificacionesPorCurso(cursoId: ID!): [Calificacion!]!
+  
+  # Boletines
+  boletines: [Boletin!]!
+  boletin(id: ID!): Boletin
+  boletinesPorEstudiante(estudianteId: ID!): [Boletin!]!
+  
+  # Matriculas
+  matriculas: [Matricula!]!
+  matricula(id: ID!): Matricula
+  matriculasPorEstudiante(estudianteId: ID!): [Matricula!]!
+  matriculasPorASignatura(asignaturaId: ID!): [Matricula!]!
+
+  # Asignaturas
+  asignaturas: [Asignatura!]!
+  asignatura(id: ID!): Asignatura
+}
+
+# Mutations
+type Mutation {
+  # Estudiantes
+  crearEstudiante(input: EstudianteInput!): Estudiante!
+  actualizarEstudiante(id: ID!, input: EstudianteInput!): Estudiante!
+  eliminarEstudiante(id: ID!): Boolean!
+  
+  # Cursos
+  crearCurso(input: CursoInput!): Curso!
+  actualizarCurso(id: ID!, input: CursoInput!): Curso!
+  eliminarCurso(id: ID!): Boolean!
+  
+  # Calificaciones
+  crearCalificacion(input: CalificacionInput!): Calificacion!
+  actualizarCalificacion(id: ID!, input: CalificacionInput!): Calificacion!
+  eliminarCalificacion(id: ID!): Boolean!
+  
+  # Boletines
+  generarBoletin(input: BoletinInput!): Boletin!
+  actualizarBoletin(id: ID!, input: BoletinInput!): Boletin!
+  eliminarBoletin(id: ID!): Boolean!
+  
+  # Matriculas
+  crearMatricula(input: MatriculaInput!): Matricula!
+  actualizarEstadoMatricula(id: ID!, estado: EstadoMatricula!): Matricula!
+  eliminarMatricula(id: ID!): Boolean!
+
+  # Asignaturas
+  crearAsignatura(input: AsignaturaInput!): Asignatura!
+  actualizarAsignatura(id: ID!, input: AsignaturaInput!): Asignatura!
+  eliminarAsignatura(id: ID!): Boolean!
+}
