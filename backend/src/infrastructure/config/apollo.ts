@@ -4,6 +4,10 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { connectToDatabase } from './mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -30,16 +34,18 @@ const repositories = {
   matriculaRepository: new MatriculaRepositoryImpl(),
 };
 
-// Configurar Apollo Server
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: () => ({
-    repositories,
-  }),
-});
+connectToDatabase().then(() => {
+  console.log('Conexión exitosa a MongoDB');
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: () => ({
+      repositories,
+    }),
+  });
 
-// Iniciar el servidor
-server.listen().then(({ url }) => {
-  console.log(`🚀 Servidor GraphQL listo en ${url}`);
+  // Iniciar el servidor
+  server.listen().then(({ url }) => {
+    console.log(`🚀 Servidor GraphQL listo en ${url}`);
+  });
 });
